@@ -1,5 +1,6 @@
 import fastify, {
   ContextConfigDefault,
+  FastifyError,
   FastifyInstance,
   FastifyReply,
   FastifyRequest,
@@ -9,6 +10,7 @@ import fastify, {
   RawServerDefault,
 } from 'fastify';
 import { RouteGenericInterface } from 'fastify/types/route';
+import { HTTPServerError } from './http-server-error';
 
 export class HTTPServer {
   private readonly server: FastifyInstance;
@@ -54,6 +56,13 @@ export class HTTPServer {
 
   public async stop(): Promise<void> {
     await this.server.close();
+  }
+
+  public setErrorHandler(
+    handler: (error: HTTPServerError | FastifyError, req: HTTPServerRequest, res: HTTPServerResponse) => void,
+  ): this {
+    this.server.setErrorHandler(handler);
+    return this;
   }
 
   public printRoutes(): string {

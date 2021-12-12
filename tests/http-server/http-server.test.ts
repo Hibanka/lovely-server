@@ -14,6 +14,8 @@ describe('HTTP Server tests', () => {
       controllers: [UserController],
     });
 
+    server.setErrorHandler((error) => console.error(error));
+
     await server.run();
 
     expect(server.port).eq(PORT);
