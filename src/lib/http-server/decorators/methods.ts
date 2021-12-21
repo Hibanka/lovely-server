@@ -1,4 +1,4 @@
-import { HTTPServerMethod, HTTPServerRoute } from 'src';
+import { HTTPServerMethod, HTTPServerRoute } from "../http-server";
 
 export const GET = (options: MethodOptions) => {
   return (target: unknown, handler: string): any => defineRoutes(target, 'GET', options.url, handler);
