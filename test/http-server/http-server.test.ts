@@ -1,4 +1,4 @@
-import { describe } from 'mocha';
+import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import axios from 'axios';
 import { HTTPServer } from '../../src';
