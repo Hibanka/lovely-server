@@ -1,17 +1,14 @@
-import { Controller, RouteController, GET, HTTPServerRequest, HTTPServerResponse, POST } from '../../../src';
+import { Controller, GET, Request, Response, POST } from '../../../src';
 
 @Controller({ route: '/user' })
-export class UserController extends RouteController {
+export class UserController {
   @GET({ url: '/avatar' })
-  public async getAvatarHandler(req: HTTPServerRequest, res: HTTPServerResponse): Promise<void> {
+  public async getAvatarHandler(req: Request, res: Response): Promise<void> {
     res.status(200).send('OK');
   }
 
   @POST({ url: '/avatar' })
-  public async createAvatarHandler(
-    req: HTTPServerRequest<{ Body: { id: string } }>,
-    res: HTTPServerResponse,
-  ): Promise<void> {
+  public async createAvatarHandler(req: Request<{ Body: { id: string } }>, res: Response): Promise<void> {
     const { id } = req.body;
 
     this.getUsers();
@@ -20,7 +17,7 @@ export class UserController extends RouteController {
   }
 
   @GET({ url: '/nickname' })
-  public async getNicknameHandler(req: HTTPServerRequest, res: HTTPServerResponse): Promise<void> {
+  public async getNicknameHandler(req: Request, res: Response): Promise<void> {
     res.status(200).send('OK');
   }
 

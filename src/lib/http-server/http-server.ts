@@ -15,7 +15,7 @@ import { HTTPServerError } from './http-server-error';
 export class HTTPServer {
   private readonly server: FastifyInstance;
   public readonly port: HTTPServerOptions['port'];
-  public readonly routes: Map<new () => RouteController, HTTPServerRoute[]>;
+  public readonly routes: Map<new () => any, Route[]>;
 
   constructor(options: HTTPServerOptions) {
     const { port, controllers } = options;
@@ -33,10 +33,10 @@ export class HTTPServer {
 
         this.routes.set(
           controller,
-          instance.routes.reduce((acc: HTTPServerRoute[], route) => {
+          instance.routes.reduce((acc: Route[], route) => {
             const url = `${baseURL}${route.url}`;
 
-            this.server[route.method.toLowerCase()](url, (req: HTTPServerRequest, res: HTTPServerResponse) =>
+            this.server[route.method.toLowerCase()](url, (req: Request, res: Response) =>
               instance[route.handler](req, res),
             );
 
@@ -46,7 +46,7 @@ export class HTTPServer {
         );
       });
     } else {
-      throw new Error('Unsupported type of controllers');
+      throw new TypeError('Unsupported type of controllers');
     }
   }
 
@@ -58,42 +58,32 @@ export class HTTPServer {
     await this.server.close();
   }
 
-  public setErrorHandler(
-    handler: (error: HTTPServerError | FastifyError, req: HTTPServerRequest, res: HTTPServerResponse) => void,
-  ): this {
+  public setErrorHandler(handler: (error: HTTPServerError | FastifyError, req: Request, res: Response) => void): this {
     this.server.setErrorHandler(handler);
     return this;
-  }
-
-  public printRoutes(): string {
-    return this.server.printRoutes();
   }
 }
 
 export interface HTTPServerOptions {
   port: number;
-  controllers: string | Array<new () => RouteController>;
+  controllers: string | Array<new () => any>;
 }
 
-export abstract class RouteController {
-  public routes: HTTPServerRoute[];
-}
-
-export interface HTTPServerRoute {
-  method: HTTPServerMethod;
+export interface Route {
+  method: Method;
   url: string;
   handler: string;
 }
 
-export type HTTPServerMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-export type HTTPServerHandler = (req: HTTPServerRequest, res: HTTPServerResponse) => void;
+export type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'HEAD';
+export type Handler = (req: Request, res: Response) => void;
 
-export type HTTPServerRequest<
+export type Request<
   RouteGeneric extends RouteGenericInterface = RouteGenericInterface,
   RawServer extends RawServerBase = RawServerDefault,
   RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<RawServer>,
 > = FastifyRequest<RouteGeneric, RawServer, RawRequest>;
-export type HTTPServerResponse<
+export type Response<
   RawServer extends RawServerBase = RawServerDefault,
   RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<RawServer>,
   RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>,

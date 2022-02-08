@@ -1,4 +1,4 @@
-import { HTTPServerMethod, HTTPServerRoute } from "../http-server";
+import { Method, Route } from '../http-server';
 
 export const GET = (options: MethodOptions) => {
   return (target: unknown, handler: string): any => defineRoutes(target, 'GET', options.url, handler);
@@ -20,14 +20,22 @@ export const DELETE = (options: MethodOptions) => {
   return (target: unknown, handler: string): any => defineRoutes(target, 'DELETE', options.url, handler);
 };
 
-function defineRoutes(target: any, method: HTTPServerMethod, url: string, handler: string) {
-  const route: HTTPServerRoute = { method, url, handler };
+export const OPTIONS = (options: MethodOptions) => {
+  return (target: unknown, handler: string): any => defineRoutes(target, 'OPTIONS', options.url, handler);
+};
+
+export const HEAD = (options: MethodOptions) => {
+  return (target: unknown, handler: string): any => defineRoutes(target, 'HEAD', options.url, handler);
+};
+
+function defineRoutes(target: any, method: Method, url: string, handler: string) {
+  const route: Route = { method, url, handler };
 
   if (target.routes) {
     target.routes = [...target.routes, route];
   } else {
     Object.defineProperty(target, 'routes', {
-      get(): HTTPServerRoute[] {
+      get(): Route[] {
         return this._routes ?? [];
       },
       set(routes) {
