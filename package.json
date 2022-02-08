@@ -1,6 +1,6 @@
 {
   "name": "lovely-server",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "repository": "https://github.com/Hibanka/lovely-server",
   "main": ".build/index.js",
   "types": ".build/index.d.ts",
@@ -8,7 +8,8 @@
   "scripts": {
     "build": "tsc -p .",
     "test": "mocha -r ts-node/register 'test/**/*.test.ts'",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "publish": "npm run build && npm run test && npm publish --access public"
   },
   "dependencies": {
     "fastify": "^3.27.1"
