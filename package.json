@@ -1,6 +1,6 @@
 {
   "name": "lovely-server",
-  "version": "2.0.1",
+  "version": "2.1.1",
   "repository": "https://github.com/Hibanka/lovely-server",
   "main": ".build/index.js",
   "types": ".build/index.d.ts",
@@ -8,19 +8,18 @@
   "scripts": {
     "build": "tsc -p .",
     "test": "mocha -r ts-node/register 'test/**/*.test.ts'",
-    "lint": "eslint . --fix",
-    "publish": "npm run build && npm run test && npm publish --access public"
+    "lint": "eslint . --fix"
   },
   "dependencies": {
     "fastify": "^3.27.1"
   },
   "devDependencies": {
-    "@hibanka/eslint-config": "^2.0.0",
-    "@hibanka/prettier-config": "^1.0.1",
-    "@hibanka/ts-config": "^1.0.1",
+    "@hibanka/eslint-config": "^2.1.1",
+    "@hibanka/prettier-config": "^2.0.0",
+    "@hibanka/ts-config": "^2.0.0",
     "@types/chai": "^4.3.0",
     "@types/mocha": "^9.1.0",
-    "@types/node": "^16.11.22",
+    "@types/node": "^16.11.24",
     "axios": "^0.25.0",
     "chai": "^4.3.6",
     "eslint": "^8.8.0",
