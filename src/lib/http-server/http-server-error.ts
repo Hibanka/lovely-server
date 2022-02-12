@@ -6,3 +6,5 @@ export class HTTPServerError extends Error {
     this.statusCode = statusCode;
   }
 }
+
+export { FastifyError } from 'fastify';
