@@ -1,41 +1,46 @@
-import { Method, Route } from '../http-server';
+import { RouteOptions } from '../http-server';
 
-export const GET = (options: MethodOptions) => {
-  return (target: unknown, handler: string): any => defineRoutes(target, 'GET', options.url, handler);
+export const GET = (options: RouteOptions) => {
+  return (target: unknown, handler: string): any =>
+    defineRoutes(target, { method: 'GET', handler, ...options });
 };
 
-export const POST = (options: MethodOptions) => {
-  return (target: unknown, handler: string): any => defineRoutes(target, 'POST', options.url, handler);
+export const POST = (options: RouteOptions) => {
+  return (target: unknown, handler: string): any =>
+    defineRoutes(target, { method: 'POST', handler, ...options });
 };
 
-export const PUT = (options: MethodOptions) => {
-  return (target: unknown, handler: string): any => defineRoutes(target, 'PUT', options.url, handler);
+export const PUT = (options: RouteOptions) => {
+  return (target: unknown, handler: string): any =>
+    defineRoutes(target, { method: 'PUT', handler, ...options });
 };
 
-export const PATCH = (options: MethodOptions) => {
-  return (target: unknown, handler: string): any => defineRoutes(target, 'PATCH', options.url, handler);
+export const PATCH = (options: RouteOptions) => {
+  return (target: unknown, handler: string): any =>
+    defineRoutes(target, { method: 'PATCH', handler, ...options });
 };
 
-export const DELETE = (options: MethodOptions) => {
-  return (target: unknown, handler: string): any => defineRoutes(target, 'DELETE', options.url, handler);
+export const DELETE = (options: RouteOptions) => {
+  return (target: unknown, handler: string): any =>
+    defineRoutes(target, { method: 'DELETE', handler, ...options });
 };
 
-export const OPTIONS = (options: MethodOptions) => {
-  return (target: unknown, handler: string): any => defineRoutes(target, 'OPTIONS', options.url, handler);
+export const OPTIONS = (options: RouteOptions) => {
+  return (target: unknown, handler: string): any =>
+    defineRoutes(target, { method: 'OPTIONS', handler, ...options });
 };
 
-export const HEAD = (options: MethodOptions) => {
-  return (target: unknown, handler: string): any => defineRoutes(target, 'HEAD', options.url, handler);
+export const HEAD = (options: RouteOptions) => {
+  return (target: unknown, handler: string): any =>
+    defineRoutes(target, { method: 'HEAD', handler, ...options });
 };
 
-function defineRoutes(target: any, method: Method, url: string, handler: string) {
-  const route: Route = { method, url, handler };
-
+function defineRoutes(target: any, route: RouteOptions & { method: string; handler: string }) {
   if (target.routes) {
     target.routes = [...target.routes, route];
   } else {
     Object.defineProperty(target, 'routes', {
-      get(): Route[] {
+      get() {
         return this._routes ?? [];
       },
       set(routes) {
@@ -45,8 +50,4 @@ function defineRoutes(target: any, method: Method, url: string, handler: string)
     });
     target.routes = [route];
   }
-}
-
-export interface MethodOptions {
-  url: string;
 }

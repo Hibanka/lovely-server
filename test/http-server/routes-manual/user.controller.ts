@@ -1,6 +1,6 @@
 import { Controller, GET, Request, Response, POST } from '../../../src';
 
-@Controller({ route: '/user' })
+@Controller({ url: '/user' })
 export class UserController {
   @GET({ url: '/avatar' })
   public async getAvatarHandler(req: Request, res: Response): Promise<void> {
@@ -8,7 +8,10 @@ export class UserController {
   }
 
   @POST({ url: '/avatar' })
-  public async createAvatarHandler(req: Request<{ Body: { id: string } }>, res: Response): Promise<void> {
+  public async createAvatarHandler(
+    req: Request<{ Body: { id: string } }>,
+    res: Response,
+  ): Promise<void> {
     const { id } = req.body;
 
     this.getUsers();

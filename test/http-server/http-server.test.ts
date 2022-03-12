@@ -28,7 +28,7 @@ describe('http-server', () => {
 
     await Promise.all([
       fetch.get('/user/avatar').then((res) => expect(res.data).eq('OK')),
-      fetch.post('/user/avatar', { id: 'test-id' }).then((res) => expect(res.data).eq('Created test-id')),
+      fetch.post('/user/avatar', { id: 'id' }).then((res) => expect(res.data).eq('Created id')),
       fetch.get('/user/nickname').then((res) => expect(res.data).eq('OK')),
     ]);
 
