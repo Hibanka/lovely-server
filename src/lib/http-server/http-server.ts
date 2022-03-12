@@ -5,6 +5,7 @@ import fastify, {
   FastifyReply,
   FastifyRequest,
   FastifySchema,
+  FastifySchemaCompiler,
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
   RawServerBase,
@@ -66,6 +67,11 @@ export class HTTPServer {
     handler: (error: HTTPServerError | FastifyError, req: Request, res: Response) => void,
   ): this {
     this.server.setErrorHandler(handler);
+    return this;
+  }
+
+  public setValidatorCompiler<T = FastifySchema>(schemaCompiler: FastifySchemaCompiler<T>): this {
+    this.server.setValidatorCompiler(schemaCompiler);
     return this;
   }
 }
