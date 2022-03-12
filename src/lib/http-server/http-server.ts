@@ -30,14 +30,14 @@ export class HTTPServer {
       // TODO
     } else if (Array.isArray(controllers)) {
       controllers.map((controller) => {
-        const { baseURL } = controller as unknown as { baseURL: `/${string}` };
+        const { baseURL } = controller as unknown as { baseURL: string };
         const instance = new controller();
 
         this.routes.set(
           controller,
           instance.routes.reduce((acc: Route[], route: Route) => {
             const method = route.method.toLowerCase();
-            const url = (baseURL + route.url) as `/${string}`;
+            const url = baseURL + route.url;
             const { handler, ...options } = route;
 
             this.server[method](url, options, (req: Request, res: Response) =>
@@ -90,7 +90,7 @@ export interface RouteOptions<
     ContextConfig,
     SchemaCompiler
   > {
-  url: `/${string}`;
+  url: string;
 }
 
 interface Route extends RouteOptions {

@@ -9,5 +9,5 @@ export const Controller = (options: ControllerOptions) => {
 };
 
 export interface ControllerOptions {
-  url: `/${string}`;
+  url: string;
 }
