@@ -17,7 +17,7 @@ import { HTTPServerError } from './http-server-error';
 
 export class HTTPServer {
   private readonly server: FastifyInstance;
-  public readonly port: HTTPServerOptions['port'];
+  public readonly port: number;
   public readonly routes: Map<new () => any, Route[]>;
 
   constructor(options: HTTPServerOptions) {
@@ -27,32 +27,26 @@ export class HTTPServer {
     this.port = port;
     this.routes = new Map();
 
-    if (typeof controllers === 'string') {
-      // TODO
-    } else if (Array.isArray(controllers)) {
-      controllers.map((controller) => {
-        const { baseURL } = controller as unknown as { baseURL: string };
-        const instance = new controller();
+    controllers.forEach((controller) => {
+      const { baseURL } = controller as unknown as { baseURL: string };
+      const instance = new controller();
 
-        this.routes.set(
-          controller,
-          instance.routes.reduce((acc: Route[], route: Route) => {
-            const method = route.method.toLowerCase();
-            const url = baseURL + route.url;
-            const { handler, ...options } = route;
+      this.routes.set(
+        controller,
+        instance.routes.reduce((acc: Route[], route: Route) => {
+          const method = route.method.toLowerCase();
+          const url = baseURL + route.url;
+          const { handler, ...options } = route;
 
-            this.server[method](url, options, (req: Request, res: Response) =>
-              instance[handler](req, res),
-            );
+          this.server[method](url, options, (req: Request, res: Response) =>
+            instance[handler](req, res),
+          );
 
-            acc.push({ ...route, url });
-            return acc;
-          }, []),
-        );
-      });
-    } else {
-      throw new TypeError('Unsupported type of controllers');
-    }
+          acc.push({ ...route, url });
+          return acc;
+        }, []),
+      );
+    });
   }
 
   public async run(): Promise<void> {
@@ -78,7 +72,7 @@ export class HTTPServer {
 
 export interface HTTPServerOptions {
   port: number;
-  controllers: string | Array<new () => any>;
+  controllers: Array<new () => any>;
 }
 
 export interface RouteOptions<

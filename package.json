@@ -1,6 +1,6 @@
 {
   "name": "lovely-server",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "repository": "https://github.com/Hibanka/lovely-server",
   "main": ".build/index.js",
   "types": ".build/index.d.ts",
