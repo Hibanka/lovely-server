@@ -10,10 +10,7 @@ export class UserController {
   }
 
   @POST({ url: '/avatar' })
-  public async createAvatarHandler(
-    req: Request<{ Body: { id: string } }>,
-    res: Response,
-  ): Promise<void> {
+  public async createAvatarHandler(req: Request<{ Body: { id: string } }>, res: Response): Promise<void> {
     const { id } = req.body;
     res.status(201).send(`Created ${id}`);
   }

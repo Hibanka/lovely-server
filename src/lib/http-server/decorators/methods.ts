@@ -35,7 +35,7 @@ export const HEAD = (options: RouteOptions) => {
     defineRoutes(target, { method: 'HEAD', handler, ...options });
 };
 
-function defineRoutes(target: any, route: RouteOptions & { method: string; handler: string }) {
+function defineRoutes(target: any, route: RouteOptions & { method: string; handler: string }): void {
   if (target.routes) {
     target.routes = [...target.routes, route];
   } else {

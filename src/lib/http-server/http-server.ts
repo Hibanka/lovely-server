@@ -38,9 +38,7 @@ export class HTTPServer {
           const url = baseURL + route.url;
           const { handler, ...options } = route;
 
-          this.server[method](url, options, (req: Request, res: Response) =>
-            instance[handler](req, res),
-          );
+          this.server[method](url, options, (req: Request, res: Response) => instance[handler](req, res));
 
           acc.push({ ...route, url });
           return acc;
