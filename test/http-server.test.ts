@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { expect } from 'chai';
-import { Controller, GET, Request, Response, POST, HTTPServer } from '../../../src';
+import { Controller, GET, Request, Response, POST, HTTPServer } from '../src';
 
 @Controller({ url: '/user' })
 export class UserController {

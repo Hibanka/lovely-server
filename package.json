@@ -1,6 +1,6 @@
 {
   "name": "lovely-server",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "repository": "https://github.com/Hibanka/lovely-server",
   "main": ".build/index.js",
   "types": ".build/index.d.ts",
@@ -12,7 +12,7 @@
     "build": "tsc -p tsconfig.build.json",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "mocha -r ts-node/register 'src/**/*.test.ts'",
+    "test": "mocha -r ts-node/register 'test/**/*.test.ts'",
     "test:file": "mocha -r ts-node/register --file",
     "prepare": "husky install"
   },
