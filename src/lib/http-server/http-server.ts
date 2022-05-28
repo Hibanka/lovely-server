@@ -1,11 +1,9 @@
 import fastify, {
   ContextConfigDefault,
-  FastifyError,
   FastifyInstance,
   FastifyReply,
   FastifyRequest,
   FastifySchema,
-  FastifySchemaCompiler,
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
   RawServerBase,
@@ -13,17 +11,16 @@ import fastify, {
   RouteShorthandOptions,
 } from 'fastify';
 import { RouteGenericInterface } from 'fastify/types/route';
-import { HTTPServerError } from './http-server-error';
 
 export class HTTPServer {
-  private readonly server: FastifyInstance;
+  public readonly fastify: FastifyInstance;
   public readonly port: number;
   public readonly routes: Map<new () => any, Route[]>;
 
   constructor(options: HTTPServerOptions) {
     const { port, controllers } = options;
 
-    this.server = fastify();
+    this.fastify = fastify();
     this.port = port;
     this.routes = new Map();
 
@@ -38,7 +35,7 @@ export class HTTPServer {
           const url = baseURL + route.url;
           const { handler, ...options } = route;
 
-          this.server[method](url, options, (req: Request, res: Response) => instance[handler](req, res));
+          this.fastify[method](url, options, (req: Request, res: Response) => instance[handler](req, res));
 
           acc.push({ ...route, url });
           return acc;
@@ -48,23 +45,11 @@ export class HTTPServer {
   }
 
   public async run(): Promise<void> {
-    await this.server.listen(this.port);
+    await this.fastify.listen(this.port);
   }
 
   public async stop(): Promise<void> {
-    await this.server.close();
-  }
-
-  public setErrorHandler(
-    handler: (error: HTTPServerError | FastifyError, req: Request, res: Response) => void,
-  ): this {
-    this.server.setErrorHandler(handler);
-    return this;
-  }
-
-  public setValidatorCompiler<T = FastifySchema>(schemaCompiler: FastifySchemaCompiler<T>): this {
-    this.server.setValidatorCompiler(schemaCompiler);
-    return this;
+    await this.fastify.close();
   }
 }
 

@@ -28,7 +28,7 @@ describe('http-server', () => {
   it('Manual routes', async () => {
     const server = new HTTPServer({ port, controllers: [UserController] });
 
-    server.setErrorHandler((error) => console.error(error));
+    server.fastify.setErrorHandler((error) => console.error(error));
 
     await server.run();
 
