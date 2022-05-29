@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { expect } from 'chai';
-import { Controller, GET, Request, Response, POST, HTTPServer } from '../src';
+import { Controller, GET, HttpServer, POST, Request, Response } from '../src';
 
 @Controller({ url: '/user' })
 export class UserController {
@@ -25,9 +25,8 @@ describe('http-server', () => {
   const port = 9999;
   const fetch = axios.create({ baseURL: `http://localhost:${port}` });
 
-  it('Manual routes', async () => {
-    const server = new HTTPServer({ port, controllers: [UserController] });
-
+  it('manual routes', async () => {
+    const server = new HttpServer({ port, controllers: [UserController] });
     server.fastify.setErrorHandler((error) => console.error(error));
 
     await server.run();

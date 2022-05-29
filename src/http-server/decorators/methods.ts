@@ -1,4 +1,4 @@
-import { RouteOptions } from '../http-server';
+import { RouteOptions } from '../server';
 
 export const GET = (options: RouteOptions) => {
   return (target: unknown, handler: string): any =>

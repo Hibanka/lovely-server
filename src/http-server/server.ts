@@ -12,12 +12,12 @@ import fastify, {
 } from 'fastify';
 import { RouteGenericInterface } from 'fastify/types/route';
 
-export class HTTPServer {
+export class HttpServer {
   public readonly fastify: FastifyInstance;
   public readonly port: number;
   public readonly routes: Map<new () => any, Route[]>;
 
-  constructor(options: HTTPServerOptions) {
+  constructor(options: HttpServerOptions) {
     const { port, controllers } = options;
 
     this.fastify = fastify();
@@ -25,14 +25,14 @@ export class HTTPServer {
     this.routes = new Map();
 
     controllers.forEach((controller) => {
-      const { baseURL } = controller as unknown as { baseURL: string };
+      const { baseURL } = controller as unknown as { baseURL: `/${string}` };
       const instance = new controller();
 
       this.routes.set(
         controller,
         instance.routes.reduce((acc: Route[], route: Route) => {
           const method = route.method.toLowerCase();
-          const url = baseURL + route.url;
+          const url = (baseURL + (route.url ?? '')) as `/${string}`;
           const { handler, ...options } = route;
 
           this.fastify[method](url, options, (req: Request, res: Response) => instance[handler](req, res));
@@ -53,7 +53,7 @@ export class HTTPServer {
   }
 }
 
-export interface HTTPServerOptions {
+export interface HttpServerOptions {
   port: number;
   controllers: Array<new () => any>;
 }
@@ -73,7 +73,7 @@ export interface RouteOptions<
     ContextConfig,
     SchemaCompiler
   > {
-  url: string;
+  url?: `/${string}`;
 }
 
 interface Route extends RouteOptions {
