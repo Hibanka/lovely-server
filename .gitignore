@@ -5,6 +5,7 @@
 /.build
 /.serverless
 .terraform
+coverage
 
 # Local env files
 /**/.env.local

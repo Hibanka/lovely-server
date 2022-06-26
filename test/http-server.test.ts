@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { expect } from 'chai';
+import { describe, it, expect } from 'vitest';
 import { Controller, GET, HttpServer, POST, Request, Response } from '../src';
 
 @Controller({ url: '/user' })
