@@ -25,14 +25,14 @@ export class HttpServer {
     this.routes = new Map();
 
     controllers.forEach((controller) => {
-      const { baseURL } = controller as unknown as { baseURL: `/${string}` };
+      const { baseURL } = controller as unknown as { baseURL: `/${string}` | undefined };
       const instance = new controller();
 
       this.routes.set(
         controller,
         instance.routes.reduce((acc: Route[], route: Route) => {
           const method = route.method.toLowerCase();
-          const url = (baseURL + (route.url ?? '')) as `/${string}`;
+          const url = ((baseURL ?? '') + (route.url ?? '')) as string;
           const { handler, ...options } = route;
 
           this.fastify[method](url, options, (req: Request, res: Response) => instance[handler](req, res));
@@ -45,7 +45,7 @@ export class HttpServer {
   }
 
   public async run(): Promise<void> {
-    await this.fastify.listen(this.port);
+    await this.fastify.listen({ port: this.port });
   }
 
   public async stop(): Promise<void> {
@@ -73,7 +73,7 @@ export interface RouteOptions<
     ContextConfig,
     SchemaCompiler
   > {
-  url?: `/${string}`;
+  url?: string;
 }
 
 interface Route extends RouteOptions {
